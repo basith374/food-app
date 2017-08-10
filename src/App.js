@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import './App.css';
 import Food from './components/Food';
 import Restaurants from './components/Restaurants';
+import RestaurantForm from './components/RestaurantForm';
+import FoodForm from './components/FoodForm';
 import Home from './components/Home';
 import {
   BrowserRouter as Router,
@@ -17,16 +19,38 @@ const routes = [
   },
   {
     path: '/restaurants',
+    exact: true,
     main: () => <Restaurants />
   },
   {
+    path: '/restaurants/create',
+    main: () => <RestaurantForm />
+  },
+  {
+    path: '/food/create',
+    main: () => <FoodForm />
+  },
+  {
     path: '/food',
+    exact: true,
     main: () => <Food />
   },
 ]
 
 class App extends Component {
+  state = {
+    sidebarHeight: '100%'
+  }
+  componentDidMount() {
+    window.addEventListener('resize', this.updateDimensions.bind(this));
+    this.updateDimensions();
+  }
+  updateDimensions() {
+    const sidebarHeight = window.outerHeight;
+    this.setState({sidebarHeight});
+  }
   render() {
+    const {sidebarHeight} = this.state;
     return (
       <Router>
         <div className="App">
@@ -36,13 +60,13 @@ class App extends Component {
             </div>
             <ul>
               <li>
-                <Link to="/" exact={true}>Home</Link>
+                <Link to="/" exact={true}><span className="pt-icon-standard pt-icon-home"></span>&nbsp;&nbsp;Home</Link>
               </li>
               <li>
-                <Link to="/restaurants">Restaurants</Link>
+                <Link to="/restaurants"><span className="pt-icon-standard pt-icon-shop"></span>&nbsp;&nbsp;Restaurants</Link>
               </li>
               <li>
-                <Link to="/food">Food</Link>
+                <Link to="/food"><span className="pt-icon-standard pt-icon-glass"></span>&nbsp;&nbsp;Food</Link>
               </li>
             </ul>
           </div>

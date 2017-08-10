@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 243edc23d8cd1a810ffd5652fc6597ea
+ * @relayHash 68468eb9c4be3b9df5a4bab5f2fe5774
  */
 
 /* eslint-disable */
@@ -9,35 +9,38 @@
 
 /*::
 import type {ConcreteBatch} from 'relay-runtime';
-export type RestaurantsAllQueryResponse = {|
+export type FoodsAllQueryResponse = {|
   +viewer: {| |};
 |};
 */
 
 
 /*
-query RestaurantsAllQuery {
+query FoodsAllQuery {
   viewer {
-    ...Restaurants_viewer
+    ...Foods_viewer
     id
   }
 }
 
-fragment Restaurants_viewer on Viewer {
-  allRestaurants {
+fragment Foods_viewer on Viewer {
+  allFoods {
     edges {
       node {
-        ...Restaurant_restaurant
+        ...Food_food
         id
       }
     }
   }
 }
 
-fragment Restaurant_restaurant on Restaurant {
-  id
+fragment Food_food on Food {
   name
-  cuisine {
+  restaurant {
+    name
+    id
+  }
+  category {
     name
     id
   }
@@ -49,7 +52,7 @@ const batch /*: ConcreteBatch*/ = {
     "argumentDefinitions": [],
     "kind": "Fragment",
     "metadata": null,
-    "name": "RestaurantsAllQuery",
+    "name": "FoodsAllQuery",
     "selections": [
       {
         "kind": "LinkedField",
@@ -61,7 +64,7 @@ const batch /*: ConcreteBatch*/ = {
         "selections": [
           {
             "kind": "FragmentSpread",
-            "name": "Restaurants_viewer",
+            "name": "Foods_viewer",
             "args": null
           }
         ],
@@ -73,11 +76,11 @@ const batch /*: ConcreteBatch*/ = {
   "id": null,
   "kind": "Batch",
   "metadata": {},
-  "name": "RestaurantsAllQuery",
+  "name": "FoodsAllQuery",
   "query": {
     "argumentDefinitions": [],
     "kind": "Root",
-    "name": "RestaurantsAllQuery",
+    "name": "FoodsAllQuery",
     "operation": "query",
     "selections": [
       {
@@ -103,15 +106,15 @@ const batch /*: ConcreteBatch*/ = {
                 "kind": "LinkedField",
                 "alias": null,
                 "args": null,
-                "concreteType": "RestaurantConnection",
-                "name": "allRestaurants",
+                "concreteType": "FoodConnection",
+                "name": "allFoods",
                 "plural": false,
                 "selections": [
                   {
                     "kind": "LinkedField",
                     "alias": null,
                     "args": null,
-                    "concreteType": "RestaurantEdge",
+                    "concreteType": "FoodEdge",
                     "name": "edges",
                     "plural": true,
                     "selections": [
@@ -119,7 +122,7 @@ const batch /*: ConcreteBatch*/ = {
                         "kind": "LinkedField",
                         "alias": null,
                         "args": null,
-                        "concreteType": "Restaurant",
+                        "concreteType": "Food",
                         "name": "node",
                         "plural": false,
                         "selections": [
@@ -132,7 +135,7 @@ const batch /*: ConcreteBatch*/ = {
                           },
                           {
                             "kind": "InlineFragment",
-                            "type": "Restaurant",
+                            "type": "Food",
                             "selections": [
                               {
                                 "kind": "ScalarField",
@@ -145,8 +148,33 @@ const batch /*: ConcreteBatch*/ = {
                                 "kind": "LinkedField",
                                 "alias": null,
                                 "args": null,
-                                "concreteType": "Cuisine",
-                                "name": "cuisine",
+                                "concreteType": "Restaurant",
+                                "name": "restaurant",
+                                "plural": false,
+                                "selections": [
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "args": null,
+                                    "name": "name",
+                                    "storageKey": null
+                                  },
+                                  {
+                                    "kind": "ScalarField",
+                                    "alias": null,
+                                    "args": null,
+                                    "name": "id",
+                                    "storageKey": null
+                                  }
+                                ],
+                                "storageKey": null
+                              },
+                              {
+                                "kind": "LinkedField",
+                                "alias": null,
+                                "args": null,
+                                "concreteType": "Category",
+                                "name": "category",
                                 "plural": false,
                                 "selections": [
                                   {
@@ -184,7 +212,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "query RestaurantsAllQuery {\n  viewer {\n    ...Restaurants_viewer\n    id\n  }\n}\n\nfragment Restaurants_viewer on Viewer {\n  allRestaurants {\n    edges {\n      node {\n        ...Restaurant_restaurant\n        id\n      }\n    }\n  }\n}\n\nfragment Restaurant_restaurant on Restaurant {\n  id\n  name\n  cuisine {\n    name\n    id\n  }\n}\n"
+  "text": "query FoodsAllQuery {\n  viewer {\n    ...Foods_viewer\n    id\n  }\n}\n\nfragment Foods_viewer on Viewer {\n  allFoods {\n    edges {\n      node {\n        ...Food_food\n        id\n      }\n    }\n  }\n}\n\nfragment Food_food on Food {\n  name\n  restaurant {\n    name\n    id\n  }\n  category {\n    name\n    id\n  }\n}\n"
 };
 
 module.exports = batch;

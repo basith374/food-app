@@ -8,10 +8,12 @@
 
 /*::
 import type {ConcreteFragment} from 'relay-runtime';
-export type Restaurant_restaurant = {|
-  +id: string;
+export type Food_food = {|
   +name: string;
-  +cuisine: ?{|
+  +restaurant: ?{|
+    +name: string;
+  |};
+  +category: ?{|
     +name: string;
   |};
 |};
@@ -22,15 +24,8 @@ const fragment /*: ConcreteFragment*/ = {
   "argumentDefinitions": [],
   "kind": "Fragment",
   "metadata": null,
-  "name": "Restaurant_restaurant",
+  "name": "Food_food",
   "selections": [
-    {
-      "kind": "ScalarField",
-      "alias": null,
-      "args": null,
-      "name": "id",
-      "storageKey": null
-    },
     {
       "kind": "ScalarField",
       "alias": null,
@@ -42,8 +37,26 @@ const fragment /*: ConcreteFragment*/ = {
       "kind": "LinkedField",
       "alias": null,
       "args": null,
-      "concreteType": "Cuisine",
-      "name": "cuisine",
+      "concreteType": "Restaurant",
+      "name": "restaurant",
+      "plural": false,
+      "selections": [
+        {
+          "kind": "ScalarField",
+          "alias": null,
+          "args": null,
+          "name": "name",
+          "storageKey": null
+        }
+      ],
+      "storageKey": null
+    },
+    {
+      "kind": "LinkedField",
+      "alias": null,
+      "args": null,
+      "concreteType": "Category",
+      "name": "category",
       "plural": false,
       "selections": [
         {
@@ -57,7 +70,7 @@ const fragment /*: ConcreteFragment*/ = {
       "storageKey": null
     }
   ],
-  "type": "Restaurant"
+  "type": "Food"
 };
 
 module.exports = fragment;

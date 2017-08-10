@@ -4,27 +4,27 @@ import {
   QueryRenderer
 } from 'react-relay'
 import environment from '../../Environment';
-import Restaurants from './Restaurants';
+import Foods from './Foods';
 
-const AllRestaurantQuery = graphql`
-  query RestaurantsAllQuery {
+const AllFoodQuery = graphql`
+  query FoodsAllQuery {
     viewer {
-      ...Restaurants_viewer
+      ...Foods_viewer
     }
   }
 `
 
-class RestaurantsWrapper extends React.Component {
+class FoodWrapper extends React.Component {
   render() {
     return (
       <QueryRenderer
         environment={environment}
-        query={AllRestaurantQuery}
+        query={AllFoodQuery}
         render={({error, props}) => {
           if(error) {
             return <div>{error.message}</div>
           } else if(props) {
-            return <Restaurants viewer={props.viewer} />
+            return <Foods viewer={props.viewer} />
           }
           return <div>Loading...</div>;
         }}
@@ -33,4 +33,4 @@ class RestaurantsWrapper extends React.Component {
   }
 }
 
-export default RestaurantsWrapper;
+export default FoodWrapper;

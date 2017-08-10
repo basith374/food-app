@@ -4,16 +4,21 @@ import {
   createFragmentContainer,
   graphql
 } from 'react-relay';
+import {
+  Link
+} from 'react-router-dom';
 
 class Restaurants extends React.Component {
   render() {
     return (
       <div className="App-content">
-        <table className="pt-table">
+        <Link to="restaurants/create" className="pt-button pt-icon-add">Create New</Link>
+        <table className="pt-table" style={{width:'100%'}}>
           <thead>
             <tr>
               <th>Name</th>
               <th>Cuisine</th>
+              <th></th>
             </tr>
           </thead>
           <tbody>
