@@ -1,12 +1,10 @@
 import React from 'react';
-import environment from '../Environment';
 import {
   graphql,
-  QueryRenderer,
   commitMutation,
   createFragmentContainer
 } from 'react-relay';
-import {Redirect} from 'react-router-dom';
+import environment from '../../Environment';
 
 const mutation = graphql`
   mutation RestaurantFormMutation(
@@ -33,6 +31,20 @@ class RestaurantForm extends React.Component {
   constructor() {
     super();
     this.saveRestaurant = this.saveRestaurant.bind(this);
+  }
+
+  componentDidMount() {
+    const {id,viewer} = this.props;
+    if(id) {
+      const restaurant = viewer.allRestaurants.edges.filter(({node}) => node.id == id)[0];
+      if(restaurant) {
+        const {
+          name,
+          cuisine
+        } = restaurant.node;
+        this.setState({name, cuisineId: cuisine.id})
+      };
+    }
   }
 
   saveRestaurant() {
@@ -92,51 +104,4 @@ class RestaurantForm extends React.Component {
   }
 }
 
-const AllCuisineQuery = graphql`
-  query RestaurantFormAllCuisineQuery {
-    viewer {
-      allCuisines {
-        edges {
-          node {
-            name
-            id
-          }
-        }
-      }
-      ...RestaurantForm_viewer
-    }
-  }
-`
-
-class RestaurantFormWrapper extends React.Component {
-  state = {
-    finished: false
-  }
-
-  finish() {
-    this.setState({finished:true});
-  }
-
-  render() {
-    if(this.state.finished) {
-      return <Redirect to="/restaurants" />
-    }
-    return (
-      <QueryRenderer
-        environment={environment}
-        query={AllCuisineQuery}
-        render={({error, props}) => {
-          if(error) {
-            return <div>{error.message}</div>
-          } else if(props) {
-            return <RestaurantForm viewer={props.viewer} finish={this.finish.bind(this)} />
-          }
-          return <div>Loading...</div>;
-        }}
-      />
-    )
-  }
-}
-
-
-export default RestaurantFormWrapper;
+export default RestaurantForm;

@@ -31,7 +31,7 @@ class Restaurant extends React.Component {
     )
     return (
       <tr>
-        <td><Link to="/">{restaurant.name}</Link></td>
+        <td><Link to={'restaurants/edit/' + restaurant.id}>{restaurant.name}</Link></td>
         <td>{restaurant.cuisine ? restaurant.cuisine.name : 'N/A'}</td>
         <td>
           <Popover content={dropdownMenu} position={Position.BOTTOM}>

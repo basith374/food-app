@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import './App.css';
 import Food from './components/Food';
 import Restaurants from './components/Restaurants';
+import Cuisines from './components/Cuisines';
 import RestaurantForm from './components/RestaurantForm';
 import FoodForm from './components/FoodForm';
 import Home from './components/Home';
@@ -27,6 +28,12 @@ const routes = [
     main: () => <RestaurantForm />
   },
   {
+    path: '/restaurants/edit/:id',
+    main: ({match}) => {
+      return <RestaurantForm id={match.params.id} />
+    }
+  },
+  {
     path: '/food/create',
     main: () => <FoodForm />
   },
@@ -35,6 +42,10 @@ const routes = [
     exact: true,
     main: () => <Food />
   },
+  {
+    path: '/cuisine',
+    main: () => <Cuisines />
+  }
 ]
 
 class App extends Component {
@@ -61,6 +72,9 @@ class App extends Component {
             <ul>
               <li>
                 <Link to="/" exact={true}><span className="pt-icon-standard pt-icon-home"></span>&nbsp;&nbsp;Home</Link>
+              </li>
+              <li>
+                <Link to="/cuisine"><span className="pt-icon-standard pt-icon-shop"></span>&nbsp;&nbsp;Cuisines</Link>
               </li>
               <li>
                 <Link to="/restaurants"><span className="pt-icon-standard pt-icon-shop"></span>&nbsp;&nbsp;Restaurants</Link>
