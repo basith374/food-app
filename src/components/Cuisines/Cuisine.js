@@ -73,7 +73,7 @@ class Cuisine extends React.Component {
     return (
       <tr>
         <td>{cuisine.name}</td>
-        <td>{cuisine.restaurants ? cuisine.restaurants.count : 'N/A'}</td>
+        <td>{cuisine.restaurants.count}</td>
         <td>
           <Button iconName="trash" onClick={this.handleDelete.bind(this)} />
           <Popover content={dropdownMenu} position={Position.BOTTOM}>

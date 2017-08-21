@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 243edc23d8cd1a810ffd5652fc6597ea
+ * @relayHash 234512282b808fcfbd1ef609aa2ca767
  */
 
 /* eslint-disable */
@@ -10,7 +10,9 @@
 /*::
 import type {ConcreteBatch} from 'relay-runtime';
 export type RestaurantsAllQueryResponse = {|
-  +viewer: {| |};
+  +viewer: {|
+    +id: string;
+  |};
 |};
 */
 
@@ -18,20 +20,36 @@ export type RestaurantsAllQueryResponse = {|
 /*
 query RestaurantsAllQuery {
   viewer {
-    ...Restaurants_viewer
     id
+    ...Restaurants_viewer
   }
 }
 
 fragment Restaurants_viewer on Viewer {
-  allRestaurants {
+  allRestaurants(first: 1000) {
     edges {
       node {
         ...Restaurant_restaurant
         id
       }
     }
+    ... on RestaurantConnection {
+      edges {
+        cursor
+        node {
+          __typename
+          id
+        }
+      }
+      pageInfo {
+        endCursor
+        hasNextPage
+        hasPreviousPage
+        startCursor
+      }
+    }
   }
+  id
 }
 
 fragment Restaurant_restaurant on Restaurant {
@@ -59,6 +77,13 @@ const batch /*: ConcreteBatch*/ = {
         "name": "viewer",
         "plural": false,
         "selections": [
+          {
+            "kind": "ScalarField",
+            "alias": null,
+            "args": null,
+            "name": "id",
+            "storageKey": null
+          },
           {
             "kind": "FragmentSpread",
             "name": "Restaurants_viewer",
@@ -102,7 +127,14 @@ const batch /*: ConcreteBatch*/ = {
               {
                 "kind": "LinkedField",
                 "alias": null,
-                "args": null,
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 1000,
+                    "type": "Int"
+                  }
+                ],
                 "concreteType": "RestaurantConnection",
                 "name": "allRestaurants",
                 "plural": false,
@@ -173,9 +205,106 @@ const batch /*: ConcreteBatch*/ = {
                       }
                     ],
                     "storageKey": null
+                  },
+                  {
+                    "kind": "InlineFragment",
+                    "type": "RestaurantConnection",
+                    "selections": [
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "RestaurantEdge",
+                        "name": "edges",
+                        "plural": true,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "args": null,
+                            "name": "cursor",
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "LinkedField",
+                            "alias": null,
+                            "args": null,
+                            "concreteType": "Restaurant",
+                            "name": "node",
+                            "plural": false,
+                            "selections": [
+                              {
+                                "kind": "ScalarField",
+                                "alias": null,
+                                "args": null,
+                                "name": "__typename",
+                                "storageKey": null
+                              }
+                            ],
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      },
+                      {
+                        "kind": "LinkedField",
+                        "alias": null,
+                        "args": null,
+                        "concreteType": "PageInfo",
+                        "name": "pageInfo",
+                        "plural": false,
+                        "selections": [
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "args": null,
+                            "name": "endCursor",
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "args": null,
+                            "name": "hasNextPage",
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "args": null,
+                            "name": "hasPreviousPage",
+                            "storageKey": null
+                          },
+                          {
+                            "kind": "ScalarField",
+                            "alias": null,
+                            "args": null,
+                            "name": "startCursor",
+                            "storageKey": null
+                          }
+                        ],
+                        "storageKey": null
+                      }
+                    ]
                   }
                 ],
-                "storageKey": null
+                "storageKey": "allRestaurants{\"first\":1000}"
+              },
+              {
+                "kind": "LinkedHandle",
+                "alias": null,
+                "args": [
+                  {
+                    "kind": "Literal",
+                    "name": "first",
+                    "value": 1000,
+                    "type": "Int"
+                  }
+                ],
+                "handle": "connection",
+                "name": "allRestaurants",
+                "key": "Restaurants_allRestaurants",
+                "filters": null
               }
             ]
           }
@@ -184,7 +313,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "query RestaurantsAllQuery {\n  viewer {\n    ...Restaurants_viewer\n    id\n  }\n}\n\nfragment Restaurants_viewer on Viewer {\n  allRestaurants {\n    edges {\n      node {\n        ...Restaurant_restaurant\n        id\n      }\n    }\n  }\n}\n\nfragment Restaurant_restaurant on Restaurant {\n  id\n  name\n  cuisine {\n    name\n    id\n  }\n}\n"
+  "text": "query RestaurantsAllQuery {\n  viewer {\n    id\n    ...Restaurants_viewer\n  }\n}\n\nfragment Restaurants_viewer on Viewer {\n  allRestaurants(first: 1000) {\n    edges {\n      node {\n        ...Restaurant_restaurant\n        id\n      }\n    }\n    ... on RestaurantConnection {\n      edges {\n        cursor\n        node {\n          __typename\n          id\n        }\n      }\n      pageInfo {\n        endCursor\n        hasNextPage\n        hasPreviousPage\n        startCursor\n      }\n    }\n  }\n  id\n}\n\nfragment Restaurant_restaurant on Restaurant {\n  id\n  name\n  cuisine {\n    name\n    id\n  }\n}\n"
 };
 
 module.exports = batch;

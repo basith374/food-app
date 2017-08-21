@@ -23,7 +23,7 @@ class Restaurants extends React.Component {
           </thead>
           <tbody>
             {this.props.viewer.allRestaurants.edges.map(({node}) => {
-              return <Restaurant key={node.__id} restaurant={node} />;
+              return <Restaurant key={node.__id} restaurant={node} viewer={this.props.viewer} />;
             })}
           </tbody>
         </table>
@@ -34,12 +34,15 @@ class Restaurants extends React.Component {
 
 export default createFragmentContainer(Restaurants, graphql`
   fragment Restaurants_viewer on Viewer {
-    allRestaurants {
+    allRestaurants(
+      first: 1000
+    ) @connection(key: "Restaurants_allRestaurants") {
       edges {
         node {
           ...Restaurant_restaurant
         }
       }
     }
+    id
   }
 `)

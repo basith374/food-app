@@ -1,8 +1,13 @@
 import React from 'react';
 import {
   createFragmentContainer,
-  graphql
+  graphql,
+  commitMutation
 } from 'react-relay';
+import environment from '../../Environment';
+import {
+  ConnectionHandler
+} from 'relay-runtime';
 import {
   Link
 } from 'react-router-dom';
@@ -11,11 +16,47 @@ import {
   Position
 } from "@blueprintjs/core";
 
+const mutation = graphql`
+  mutation RestaurantDeleteMutation (
+    $input: DeleteRestaurantInput!
+  ) {
+    deleteRestaurant(input: $input) {
+      deletedId
+    }
+  }
+`;
+
 class Restaurant extends React.Component {
   handleDelete() {
-    if(window.confirm('Are you sure?')) {
-      console.log('kaboom');
-    }
+    const {id} = this.props.restaurant;
+    // const confirmed = window.confirm('Are you sure?');
+    // if(!confirmed) return;
+    const variables = {
+      input: {
+        id,
+        clientMutationId: "",
+      }
+    };
+    commitMutation(
+      environment,
+      {
+        mutation,
+        variables,
+        updater: (store) => {
+          const userProxy = store.get(this.props.viewer.id);
+          const payload = store.getRootField('deleteRestaurant');
+          var deletedId = payload.getValue('deletedId');
+          var conn = ConnectionHandler.getConnection(
+            userProxy,
+            'Restaurants_allRestaurants'
+          );
+          ConnectionHandler.deleteNode(
+            conn,
+            deletedId
+          );
+        }
+      }
+    )
   }
 
   render() {
@@ -24,7 +65,7 @@ class Restaurant extends React.Component {
       <Menu>
           <MenuItem
               iconName="trash"
-              onClick={this.handleDelete}
+              onClick={this.handleDelete.bind(this)}
               text="Delete"
           />
       </Menu>
@@ -34,6 +75,7 @@ class Restaurant extends React.Component {
         <td><Link to={'restaurants/edit/' + restaurant.id}>{restaurant.name}</Link></td>
         <td>{restaurant.cuisine ? restaurant.cuisine.name : 'N/A'}</td>
         <td>
+          <Button iconName="trash" onClick={this.handleDelete.bind(this)} />
           <Popover content={dropdownMenu} position={Position.BOTTOM}>
             <Button iconName="more" />
           </Popover>

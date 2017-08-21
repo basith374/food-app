@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 00f86cc2e3ec71808d2d68d529befea7
+ * @relayHash 6fe8389344622e68537e42fdf90560e6
  */
 
 /* eslint-disable */
@@ -42,9 +42,16 @@ export type CuisineFormMutationVariables = {|
 
 export type CuisineFormMutationResponse = {|
   +createCuisine: ?{|
-    +cuisine: ?{|
-      +id: string;
-      +name: string;
+    +edge: ?{|
+      +__typename: string;
+      +cursor: string;
+      +node: {|
+        +id: string;
+        +name: string;
+        +restaurants: ?{|
+          +count: number;
+        |};
+      |};
     |};
   |};
 |};
@@ -56,9 +63,16 @@ mutation CuisineFormMutation(
   $input: CreateCuisineInput!
 ) {
   createCuisine(input: $input) {
-    cuisine {
-      id
-      name
+    edge {
+      __typename
+      cursor
+      node {
+        id
+        name
+        restaurants {
+          count
+        }
+      }
     }
   }
 }
@@ -97,22 +111,65 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "LinkedField",
             "alias": null,
             "args": null,
-            "concreteType": "Cuisine",
-            "name": "cuisine",
+            "concreteType": "CuisineEdge",
+            "name": "edge",
             "plural": false,
             "selections": [
               {
                 "kind": "ScalarField",
                 "alias": null,
                 "args": null,
-                "name": "id",
+                "name": "__typename",
                 "storageKey": null
               },
               {
                 "kind": "ScalarField",
                 "alias": null,
                 "args": null,
-                "name": "name",
+                "name": "cursor",
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "args": null,
+                "concreteType": "Cuisine",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "id",
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "name",
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "RestaurantConnection",
+                    "name": "restaurants",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "args": null,
+                        "name": "count",
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
                 "storageKey": null
               }
             ],
@@ -160,22 +217,65 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "LinkedField",
             "alias": null,
             "args": null,
-            "concreteType": "Cuisine",
-            "name": "cuisine",
+            "concreteType": "CuisineEdge",
+            "name": "edge",
             "plural": false,
             "selections": [
               {
                 "kind": "ScalarField",
                 "alias": null,
                 "args": null,
-                "name": "id",
+                "name": "__typename",
                 "storageKey": null
               },
               {
                 "kind": "ScalarField",
                 "alias": null,
                 "args": null,
-                "name": "name",
+                "name": "cursor",
+                "storageKey": null
+              },
+              {
+                "kind": "LinkedField",
+                "alias": null,
+                "args": null,
+                "concreteType": "Cuisine",
+                "name": "node",
+                "plural": false,
+                "selections": [
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "id",
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "ScalarField",
+                    "alias": null,
+                    "args": null,
+                    "name": "name",
+                    "storageKey": null
+                  },
+                  {
+                    "kind": "LinkedField",
+                    "alias": null,
+                    "args": null,
+                    "concreteType": "RestaurantConnection",
+                    "name": "restaurants",
+                    "plural": false,
+                    "selections": [
+                      {
+                        "kind": "ScalarField",
+                        "alias": null,
+                        "args": null,
+                        "name": "count",
+                        "storageKey": null
+                      }
+                    ],
+                    "storageKey": null
+                  }
+                ],
                 "storageKey": null
               }
             ],
@@ -186,7 +286,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "mutation CuisineFormMutation(\n  $input: CreateCuisineInput!\n) {\n  createCuisine(input: $input) {\n    cuisine {\n      id\n      name\n    }\n  }\n}\n"
+  "text": "mutation CuisineFormMutation(\n  $input: CreateCuisineInput!\n) {\n  createCuisine(input: $input) {\n    edge {\n      __typename\n      cursor\n      node {\n        id\n        name\n        restaurants {\n          count\n        }\n      }\n    }\n  }\n}\n"
 };
 
 module.exports = batch;

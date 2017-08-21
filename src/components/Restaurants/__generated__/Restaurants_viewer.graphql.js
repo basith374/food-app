@@ -14,6 +14,7 @@ export type Restaurants_viewer = {|
       +node: {| |};
     |}>;
   |};
+  +id: string;
 |};
 */
 
@@ -21,15 +22,26 @@ export type Restaurants_viewer = {|
 const fragment /*: ConcreteFragment*/ = {
   "argumentDefinitions": [],
   "kind": "Fragment",
-  "metadata": null,
+  "metadata": {
+    "connection": [
+      {
+        "count": null,
+        "cursor": null,
+        "direction": "forward",
+        "path": [
+          "allRestaurants"
+        ]
+      }
+    ]
+  },
   "name": "Restaurants_viewer",
   "selections": [
     {
       "kind": "LinkedField",
-      "alias": null,
+      "alias": "allRestaurants",
       "args": null,
       "concreteType": "RestaurantConnection",
-      "name": "allRestaurants",
+      "name": "__Restaurants_allRestaurants_connection",
       "plural": false,
       "selections": [
         {
@@ -60,6 +72,13 @@ const fragment /*: ConcreteFragment*/ = {
           "storageKey": null
         }
       ],
+      "storageKey": null
+    },
+    {
+      "kind": "ScalarField",
+      "alias": null,
+      "args": null,
+      "name": "id",
       "storageKey": null
     }
   ],

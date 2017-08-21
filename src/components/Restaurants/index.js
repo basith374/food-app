@@ -9,6 +9,7 @@ import Restaurants from './Restaurants';
 const AllRestaurantQuery = graphql`
   query RestaurantsAllQuery {
     viewer {
+      id
       ...Restaurants_viewer
     }
   }

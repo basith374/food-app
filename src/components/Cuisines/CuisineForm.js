@@ -17,9 +17,16 @@ const mutation = graphql`
     $input: CreateCuisineInput!
   ) {
     createCuisine(input: $input) {
-      cuisine {
-        id
-        name
+      edge {
+        __typename
+        cursor
+        node {
+          id
+          name
+          restaurants {
+            count
+          }
+        }
       }
     }
   }
@@ -37,21 +44,12 @@ class CuisineForm extends React.Component {
     this.setState({
       name: ''
     })
-    let tempID = 0;
     const variables = {
       input: {
         name,
-        clientMutationId: tempID++,
+        clientMutationId: "",
       }
     };
-    function sharedUpdater(store, user, newEdge) {
-      const userProxy = store.get(user.id);
-      const conn = ConnectionHandler.getConnection(
-        userProxy,
-        'Cuisines_allCuisines',
-      );
-      ConnectionHandler.insertEdgeAfter(conn, newEdge);
-    }
     commitMutation(
       environment,
       {
@@ -59,21 +57,14 @@ class CuisineForm extends React.Component {
         variables,
         updater: (store) => {
           const payload = store.getRootField('createCuisine');
-          const newEdge = payload.getLinkedRecord('cuisine');
-          sharedUpdater(store, this.props.viewer, newEdge);
-        },
-        optimisticUpdater: (store) => {
-          const id = 'client:newCuisine:' + tempID++;
-          const node = store.create(id, 'Cuisine');
-          node.setValue(name, 'name');
-          node.setValue(id, 'id');
-          const newEdge = store.create(
-            'client:newEdge:' + tempID++,
-            'cuisine',
+          const newEdge = payload.getLinkedRecord('edge');
+          const userProxy = store.get(this.props.viewer.id);
+          const conn = ConnectionHandler.getConnection(
+            userProxy,
+            'Cuisines_allCuisines',
           );
-          newEdge.setLinkedRecord(node, 'node');
-          sharedUpdater(store, this.props.viewer, newEdge);
-        }
+          ConnectionHandler.insertEdgeAfter(conn, newEdge);
+        },
       }
     )
   }

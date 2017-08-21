@@ -37,7 +37,7 @@ class Cuisines extends React.Component {
 export default createFragmentContainer(Cuisines, graphql`
   fragment Cuisines_viewer on Viewer {
     allCuisines(
-      first: 1000  # max GraphQLInt
+      first: 1000
     ) @connection(key: "Cuisines_allCuisines") {
       edges {
         node {

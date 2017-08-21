@@ -8,9 +8,9 @@ import environment from '../../Environment';
 
 const mutation = graphql`
   mutation RestaurantFormMutation(
-    $input: CreateRestaurantInput!
+    $input: UpdateOrCreateRestaurantInput!
   ) {
-    createRestaurant(input: $input) {
+    updateOrCreateRestaurant(input: $input) {
       restaurant {
         id
         name
@@ -52,10 +52,20 @@ class RestaurantForm extends React.Component {
       name,
       cuisineId
     } = this.state;
+    const id = this.props.id || "";
+    const create = {
+      name,
+      cuisineId
+    }
+    const update = {
+      name,
+      cuisineId,
+      id
+    }
     const variables = {
       input: {
-        name,
-        cuisineId,
+        create,
+        update,
         clientMutationId: "",
       }
     };

@@ -1,6 +1,6 @@
 /**
  * @flow
- * @relayHash 1ac9eec517aec0d69c9bd256136e033f
+ * @relayHash c591dbb2e6ceed4ed69ef8240d8e8e5a
  */
 
 /* eslint-disable */
@@ -11,69 +11,131 @@
 import type {ConcreteBatch} from 'relay-runtime';
 export type RestaurantFormMutationVariables = {|
   input: {
-    name: string;
-    cuisineId?: ?string;
-    cuisine?: ?{
-      name: string;
-      restaurantsIds?: ?$ReadOnlyArray<string>;
-      restaurants?: ?$ReadOnlyArray<{
+    update: {
+      id: string;
+      name?: ?string;
+      cuisineId?: ?string;
+      cuisine?: ?{
         name: string;
-        categoriesIds?: ?$ReadOnlyArray<string>;
-        categories?: ?$ReadOnlyArray<{
+        restaurantsIds?: ?$ReadOnlyArray<string>;
+        restaurants?: ?$ReadOnlyArray<{
           name: string;
-          restaurantId?: ?string;
+          categoriesIds?: ?$ReadOnlyArray<string>;
+          categories?: ?$ReadOnlyArray<{
+            name: string;
+            restaurantId?: ?string;
+            foodsIds?: ?$ReadOnlyArray<string>;
+          }>;
           foodsIds?: ?$ReadOnlyArray<string>;
+          foods?: ?$ReadOnlyArray<{
+            name: string;
+            categoryId?: ?string;
+            restaurantId?: ?string;
+          }>;
         }>;
+      };
+      categoriesIds?: ?$ReadOnlyArray<string>;
+      categories?: ?$ReadOnlyArray<{
+        name: string;
         foodsIds?: ?$ReadOnlyArray<string>;
         foods?: ?$ReadOnlyArray<{
           name: string;
-          categoryId?: ?string;
           restaurantId?: ?string;
+          restaurant?: ?{
+            name: string;
+            cuisineId?: ?string;
+            categoriesIds?: ?$ReadOnlyArray<string>;
+            foodsIds?: ?$ReadOnlyArray<string>;
+          };
         }>;
       }>;
-    };
-    categoriesIds?: ?$ReadOnlyArray<string>;
-    categories?: ?$ReadOnlyArray<{
-      name: string;
       foodsIds?: ?$ReadOnlyArray<string>;
       foods?: ?$ReadOnlyArray<{
         name: string;
-        restaurantId?: ?string;
-        restaurant?: ?{
+        categoryId?: ?string;
+        category?: ?{
           name: string;
-          cuisineId?: ?string;
-          categoriesIds?: ?$ReadOnlyArray<string>;
+          restaurantId?: ?string;
+          restaurant?: ?{
+            name: string;
+            cuisineId?: ?string;
+            categoriesIds?: ?$ReadOnlyArray<string>;
+            foodsIds?: ?$ReadOnlyArray<string>;
+          };
           foodsIds?: ?$ReadOnlyArray<string>;
+          foods?: ?$ReadOnlyArray<{
+            name: string;
+            categoryId?: ?string;
+            restaurantId?: ?string;
+          }>;
         };
       }>;
-    }>;
-    foodsIds?: ?$ReadOnlyArray<string>;
-    foods?: ?$ReadOnlyArray<{
+    };
+    create: {
       name: string;
-      categoryId?: ?string;
-      category?: ?{
+      cuisineId?: ?string;
+      cuisine?: ?{
         name: string;
-        restaurantId?: ?string;
-        restaurant?: ?{
+        restaurantsIds?: ?$ReadOnlyArray<string>;
+        restaurants?: ?$ReadOnlyArray<{
           name: string;
-          cuisineId?: ?string;
           categoriesIds?: ?$ReadOnlyArray<string>;
+          categories?: ?$ReadOnlyArray<{
+            name: string;
+            restaurantId?: ?string;
+            foodsIds?: ?$ReadOnlyArray<string>;
+          }>;
           foodsIds?: ?$ReadOnlyArray<string>;
-        };
+          foods?: ?$ReadOnlyArray<{
+            name: string;
+            categoryId?: ?string;
+            restaurantId?: ?string;
+          }>;
+        }>;
+      };
+      categoriesIds?: ?$ReadOnlyArray<string>;
+      categories?: ?$ReadOnlyArray<{
+        name: string;
         foodsIds?: ?$ReadOnlyArray<string>;
         foods?: ?$ReadOnlyArray<{
           name: string;
-          categoryId?: ?string;
           restaurantId?: ?string;
+          restaurant?: ?{
+            name: string;
+            cuisineId?: ?string;
+            categoriesIds?: ?$ReadOnlyArray<string>;
+            foodsIds?: ?$ReadOnlyArray<string>;
+          };
         }>;
-      };
-    }>;
+      }>;
+      foodsIds?: ?$ReadOnlyArray<string>;
+      foods?: ?$ReadOnlyArray<{
+        name: string;
+        categoryId?: ?string;
+        category?: ?{
+          name: string;
+          restaurantId?: ?string;
+          restaurant?: ?{
+            name: string;
+            cuisineId?: ?string;
+            categoriesIds?: ?$ReadOnlyArray<string>;
+            foodsIds?: ?$ReadOnlyArray<string>;
+          };
+          foodsIds?: ?$ReadOnlyArray<string>;
+          foods?: ?$ReadOnlyArray<{
+            name: string;
+            categoryId?: ?string;
+            restaurantId?: ?string;
+          }>;
+        };
+      }>;
+    };
     clientMutationId: string;
   };
 |};
 
 export type RestaurantFormMutationResponse = {|
-  +createRestaurant: ?{|
+  +updateOrCreateRestaurant: ?{|
     +restaurant: ?{|
       +id: string;
       +name: string;
@@ -88,9 +150,9 @@ export type RestaurantFormMutationResponse = {|
 
 /*
 mutation RestaurantFormMutation(
-  $input: CreateRestaurantInput!
+  $input: UpdateOrCreateRestaurantInput!
 ) {
-  createRestaurant(input: $input) {
+  updateOrCreateRestaurant(input: $input) {
     restaurant {
       id
       name
@@ -108,7 +170,7 @@ const batch /*: ConcreteBatch*/ = {
       {
         "kind": "LocalArgument",
         "name": "input",
-        "type": "CreateRestaurantInput!",
+        "type": "UpdateOrCreateRestaurantInput!",
         "defaultValue": null
       }
     ],
@@ -124,11 +186,11 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "Variable",
             "name": "input",
             "variableName": "input",
-            "type": "CreateRestaurantInput!"
+            "type": "UpdateOrCreateRestaurantInput!"
           }
         ],
-        "concreteType": "CreateRestaurantPayload",
-        "name": "createRestaurant",
+        "concreteType": "UpdateOrCreateRestaurantPayload",
+        "name": "updateOrCreateRestaurant",
         "plural": false,
         "selections": [
           {
@@ -189,7 +251,7 @@ const batch /*: ConcreteBatch*/ = {
       {
         "kind": "LocalArgument",
         "name": "input",
-        "type": "CreateRestaurantInput!",
+        "type": "UpdateOrCreateRestaurantInput!",
         "defaultValue": null
       }
     ],
@@ -205,11 +267,11 @@ const batch /*: ConcreteBatch*/ = {
             "kind": "Variable",
             "name": "input",
             "variableName": "input",
-            "type": "CreateRestaurantInput!"
+            "type": "UpdateOrCreateRestaurantInput!"
           }
         ],
-        "concreteType": "CreateRestaurantPayload",
-        "name": "createRestaurant",
+        "concreteType": "UpdateOrCreateRestaurantPayload",
+        "name": "updateOrCreateRestaurant",
         "plural": false,
         "selections": [
           {
@@ -260,7 +322,7 @@ const batch /*: ConcreteBatch*/ = {
       }
     ]
   },
-  "text": "mutation RestaurantFormMutation(\n  $input: CreateRestaurantInput!\n) {\n  createRestaurant(input: $input) {\n    restaurant {\n      id\n      name\n      cuisine {\n        id\n      }\n    }\n  }\n}\n"
+  "text": "mutation RestaurantFormMutation(\n  $input: UpdateOrCreateRestaurantInput!\n) {\n  updateOrCreateRestaurant(input: $input) {\n    restaurant {\n      id\n      name\n      cuisine {\n        id\n      }\n    }\n  }\n}\n"
 };
 
 module.exports = batch;
